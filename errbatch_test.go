@@ -2,13 +2,14 @@ package errbatch_test
 
 import (
 	"errors"
+	"reflect"
 	"testing"
 
 	"github.com/fishy/errbatch"
 )
 
 func TestAdd(t *testing.T) {
-	err := errbatch.NewErrBatch()
+	var err errbatch.ErrBatch
 	if len(err.GetErrors()) != 0 {
 		t.Error("A new ErrBatch should contain zero errors.")
 	}
@@ -28,7 +29,7 @@ func TestAdd(t *testing.T) {
 		t.Errorf("Expected %#v, got %#v", err0, actual)
 	}
 
-	another := errbatch.NewErrBatch()
+	var another errbatch.ErrBatch
 	err.Add(another)
 	if len(err.GetErrors()) != 1 {
 		t.Error("Empty batch should be skipped.")
@@ -57,10 +58,24 @@ func TestAdd(t *testing.T) {
 	if len(err.GetErrors()) != 0 {
 		t.Error("A cleared ErrBatch should contain zero errors.")
 	}
+
+	pointer := new(errbatch.ErrBatch)
+	err.Add(pointer)
+	if len(err.GetErrors()) != 0 {
+		t.Error("Empty batch should be skipped.")
+	}
+	err1 = errors.New("bar")
+	pointer.Add(err1)
+	err2 = errors.New("foobar")
+	pointer.Add(err2)
+	err.Add(pointer)
+	if len(err.GetErrors()) != 2 {
+		t.Error("The underlying errors should be added instead of the batch.")
+	}
 }
 
 func TestCompile(t *testing.T) {
-	batch := errbatch.NewErrBatch()
+	var batch errbatch.ErrBatch
 	err0 := errors.New("foo")
 	err1 := errors.New("bar")
 	err2 := errors.New("foobar")
@@ -84,5 +99,26 @@ func TestCompile(t *testing.T) {
 	expect := "total 3 error(s) in this batch: foo; bar; foobar"
 	if err.Error() != expect {
 		t.Errorf("Compiled error expected %#v, got %#v", expect, err)
+	}
+
+	errString := batch.Error()
+	if errString != expect {
+		t.Errorf("Compiled error expected %#v, got %#v", expect, errString)
+	}
+}
+
+func TestGetErrors(t *testing.T) {
+	var batch errbatch.ErrBatch
+	err0 := errors.New("foo")
+	err1 := errors.New("bar")
+	err2 := errors.New("foobar")
+
+	batch.Add(err0)
+	batch.Add(err1)
+	batch.Add(err2)
+	errs := batch.GetErrors()
+	expect := []error{err0, err1, err2}
+	if !reflect.DeepEqual(errs, expect) {
+		t.Errorf("GetErrors expected %#v, got %#v", expect, errs)
 	}
 }

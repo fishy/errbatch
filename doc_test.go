@@ -8,10 +8,9 @@ import (
 )
 
 func Example() {
-	var singleError error
-	batch := errbatch.NewErrBatch()
+	var batch errbatch.ErrBatch
 
-	singleError = batch.Compile()
+	var singleError error = batch.Compile()
 	fmt.Printf("0: %v\n", singleError)
 
 	err := errors.New("foo")
@@ -28,7 +27,7 @@ func Example() {
 	singleError = batch.Compile()
 	fmt.Printf("2: %v\n", singleError)
 
-	newBatch := errbatch.NewErrBatch()
+	var newBatch errbatch.ErrBatch
 	err = errors.New("foobar")
 	newBatch.Add(err)
 	newBatch.Add(batch)
