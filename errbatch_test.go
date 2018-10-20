@@ -96,7 +96,7 @@ func TestCompile(t *testing.T) {
 	batch.Add(err1)
 	batch.Add(err2)
 	err = batch.Compile()
-	expect := "total 3 error(s) in this batch: foo; bar; foobar"
+	expect := "errbatch: total 3 error(s) in this batch: foo; bar; foobar"
 	if err.Error() != expect {
 		t.Errorf("Compiled error expected %#v, got %#v", expect, err)
 	}

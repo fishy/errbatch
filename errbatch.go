@@ -19,7 +19,11 @@ type ErrBatch struct {
 // Error satisfies the error interface.
 func (eb ErrBatch) Error() string {
 	var builder strings.Builder
-	fmt.Fprintf(&builder, "total %d error(s) in this batch", len(eb.errors))
+	fmt.Fprintf(
+		&builder,
+		"errbatch: total %d error(s) in this batch",
+		len(eb.errors),
+	)
 	for i, err := range eb.errors {
 		if i == 0 {
 			builder.WriteString(": ")

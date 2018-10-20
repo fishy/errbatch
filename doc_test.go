@@ -37,6 +37,6 @@ func Example() {
 	// 0: <nil>
 	// 1: foo
 	// Nil errors are skipped: foo
-	// 2: total 2 error(s) in this batch: foo; bar
-	// 3: total 3 error(s) in this batch: foobar; foo; bar
+	// 2: errbatch: total 2 error(s) in this batch: foo; bar
+	// 3: errbatch: total 3 error(s) in this batch: foobar; foo; bar
 }
