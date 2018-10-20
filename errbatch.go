@@ -45,6 +45,8 @@ func (eb *ErrBatch) addBatch(batch *ErrBatch) {
 // its underlying error(s) will be added instead of the ErrBatch itself.
 //
 // Nil error will be skipped.
+//
+// Add is not thread-safe.
 func (eb *ErrBatch) Add(err error) {
 	if batch, ok := err.(ErrBatch); ok {
 		eb.addBatch(&batch)
