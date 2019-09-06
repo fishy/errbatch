@@ -1,6 +1,7 @@
 package errbatch
 
 import (
+	"errors"
 	"fmt"
 	"strings"
 )
@@ -35,6 +36,26 @@ func (eb ErrBatch) Error() string {
 	return builder.String()
 }
 
+// As implements helper interface for errors.As.
+func (eb ErrBatch) As(v interface{}) bool {
+	if target, ok := v.(*ErrBatch); ok {
+		target.errors = eb.GetErrors()
+		return true
+	}
+	return false
+}
+
+// Unwrap implements the hidden errors interface.
+//
+// When the batch contains exactly one error, that error is returned.
+// It returns nil otherwise.
+func (eb ErrBatch) Unwrap() error {
+	if len(eb.errors) == 1 {
+		return eb.errors[0]
+	}
+	return nil
+}
+
 func (eb *ErrBatch) addBatch(batch *ErrBatch) {
 	eb.errors = append(eb.errors, batch.errors...)
 }
@@ -45,20 +66,15 @@ func (eb *ErrBatch) addBatch(batch *ErrBatch) {
 // its underlying error(s) will be added instead of the ErrBatch itself.
 //
 // Nil error will be skipped.
-//
-// Add is not thread-safe.
 func (eb *ErrBatch) Add(err error) {
-	if batch, ok := err.(ErrBatch); ok {
+	if err == nil {
+		return
+	}
+
+	var batch ErrBatch
+	if errors.As(err, &batch) {
 		eb.addBatch(&batch)
-		return
-	}
-
-	if batch, ok := err.(*ErrBatch); ok {
-		eb.addBatch(batch)
-		return
-	}
-
-	if err != nil {
+	} else {
 		eb.errors = append(eb.errors, err)
 	}
 }

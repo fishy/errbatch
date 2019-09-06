@@ -2,6 +2,7 @@ package errbatch_test
 
 import (
 	"errors"
+	"fmt"
 	"reflect"
 	"testing"
 
@@ -120,5 +121,31 @@ func TestGetErrors(t *testing.T) {
 	expect := []error{err0, err1, err2}
 	if !reflect.DeepEqual(errs, expect) {
 		t.Errorf("GetErrors expected %#v, got %#v", expect, errs)
+	}
+}
+
+func TestUnwrap(t *testing.T) {
+	expected := errors.New("foo")
+	err0 := fmt.Errorf("wrapped: %w", expected)
+
+	var batch errbatch.ErrBatch
+	if err := batch.Unwrap(); err != nil {
+		t.Errorf("Unwrap on empty batch expected nil, got %v", err)
+	}
+	if errors.Is(batch, expected) {
+		t.Errorf("errors.Is on empty batch expected false, got true")
+	}
+
+	batch.Add(err0)
+	if !errors.Is(batch, expected) {
+		t.Errorf("errors.Is on one item batch expected true, got false")
+	}
+
+	batch.Add(err0)
+	if err := batch.Unwrap(); err != nil {
+		t.Errorf("Unwrap on more-than-one batch expected nil, got %v", err)
+	}
+	if errors.Is(batch, expected) {
+		t.Errorf("errors.Is on more-than-one batch expected false, got true")
 	}
 }

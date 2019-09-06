@@ -27,4 +27,7 @@
 //         // instead of wrapping it inside ErrBatch.
 //         return batch.Compile()
 //     }
+//
+// This package is not thread-safe.
+// The same batch should not be operated on different goroutines.
 package errbatch
