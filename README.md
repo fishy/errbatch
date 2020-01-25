@@ -3,6 +3,10 @@
 
 # ErrBatch
 
+DEPRECATED: Please use
+[batcherror](https://godoc.org/github.com/reddit/baseplate.go/batcherror)
+instead.
+
 ErrBatch is a [Go](https://golang.org)
 [library](https://godoc.org/github.com/fishy/errbatch) that can be used to
 compile multiple errors into a single error.
