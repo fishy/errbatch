@@ -1,14 +1,14 @@
-[![GoDoc](https://godoc.org/github.com/fishy/errbatch?status.svg)](https://godoc.org/github.com/fishy/errbatch)
+[![GoDoc](https://godoc.org/github.com/fishy/errbatch?status.svg)](https://pkg.go.dev/github.com/fishy/errbatch)
 [![Go Report Card](https://goreportcard.com/badge/github.com/fishy/errbatch)](https://goreportcard.com/report/github.com/fishy/errbatch)
 
 # ErrBatch
 
 DEPRECATED: Please use
-[batcherror](https://godoc.org/github.com/reddit/baseplate.go/batcherror)
+[batcherror](https://pkg.go.dev/github.com/reddit/baseplate.go/batcherror)
 instead.
 
 ErrBatch is a [Go](https://golang.org)
-[library](https://godoc.org/github.com/fishy/errbatch) that can be used to
+[library](https://pkg.go.dev/github.com/fishy/errbatch) that can be used to
 compile multiple errors into a single error.
 
 Example code:

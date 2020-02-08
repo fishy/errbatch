@@ -1,5 +1,5 @@
 // Package errbatch is DEPRECATED.
-// Please use https://godoc.org/github.com/reddit/baseplate.go/batcherror
+// Please use https://pkg.go.dev/github.com/reddit/baseplate.go/batcherror
 // instead.
 //
 // Package errbatch provides ErrBatch, which can be used to compile multiple
