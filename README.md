@@ -4,7 +4,7 @@
 # ErrBatch
 
 DEPRECATED: Please use
-[batcherror](https://pkg.go.dev/github.com/reddit/baseplate.go/batcherror)
+[errorsbp](https://pkg.go.dev/github.com/reddit/baseplate.go/errorsbp)
 instead.
 
 ErrBatch is a [Go](https://golang.org)
